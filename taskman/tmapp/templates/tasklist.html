@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Задачи{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex p-2  flex-wrap "  style="gap: 0.5vw">
+    {% for task in tasks %}
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+          {% if task.is_complete %}
+          <h5 class="card-title"><b>Завершена</b></h5>
+          {% endif %}
+        <h5 class="card-title">
+          {{ task.name | truncatechars_html:50 }}
+        </h5><br>
+        {% if task.status %}
+          <p class="card-text">Статус: {{ task.status }}</p>
+        {% endif %}
+        {% if task.executor %}
+          <p class="card-text">Исполнитель: {{ task.executor.username }}</p>
+        {% else %}
+          <p class="card-text"><b>Исполнитель не назначен</b></p>
+        {% endif %}
+        <a href="{% url 'task' task.id %}" class="btn btn-secondary">Подробно</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

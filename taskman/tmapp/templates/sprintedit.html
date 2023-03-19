@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Изменение спринта {{ id }}{% endblock %}
+
+{% block content %}
+
+<div class="container ">
+    <div style="width: 30rem;">
+
+        <br>
+        <h5 class="title">Изменение спринта</h5>
+        <br>
+
+        <form method="post" action="{% url 'sprintedit' id %}">
+
+            <div class="mb-3">
+                <label class="form-label">Название</label>
+                {{ form.name }}
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label">Дата начала</label>
+                    <div class="col-sm-8">
+                    {{ form.date_start }}
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label">Дата окончания</label>
+                    <div class="col-sm-8">
+                    {{ form.date_end }}
+                </div>
+            </div>
+
+
+   
+            {% csrf_token %}
+
+
+            {% if form.errors or form.non_field_errors %}
+            <div class="list-group text-warning">
+                {% for field in form %}
+                    {{ field.errors }}
+                {% endfor %}
+
+                {{ form.non_field_errors }}
+            </div>            
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary btn-block mb-4">Изменить</button>
+        </form>
+        <div class="row justify-content-between">
+            <div class="col-sm-2 ">
+                <input type="button" class = "btn btn-danger btn-block" onclick="window.location.href='{% url 'sprintdelete' id %}';" value="Удалить" />
+            </div>
+            <div class="col-sm-2 ">
+                <input type="button" class = "btn btn-info" onclick="history.back();" value="Назад"/>      
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

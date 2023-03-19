@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Задача {{ task.id }}{% endblock %}
+
+{% block content %}
+
+<div class="container ">
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Задача № {{ task.id }} {{ task.name }}
+            </h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">{{ task.content | linebreaks }}</p>
+        </div>
+
+        <div class="card-footer text-muted  gap-3">
+                <div class="row justify-content-between">
+                    <div class="col-12">
+                        <form method="post" action="{% url 'task' task.id %}">
+                            <p class="card-text">
+                                <input type="submit" class="btn btn-primary btn-block" value="Предыущий статус" name="_prev-status">
+                                    Статус: <b>{{ task.status }}</b>
+                                <input type="submit" class="btn btn-primary btn-block" value="Следующий статус" name="_next-status">
+                            </p>
+
+                            <input type="button" class = "btn  btn-secondary btn-block" onclick="window.location.href='{% url 'statuslist'  %}';" value="Добавить статус" />
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+        </div>
+
+        <div class="card-footer text-muted  gap-3">
+            <div class="row justify-content-between">
+                <div class="col-4">
+                  {% if task.executor %}
+                    <p class="card-text">Исполнитель: {{ task.executor.username }}</p>
+                  {% else %}
+                    <p class="card-text"><b>Исполнитель не назначен</b></p>
+                  {% endif %}
+                </div>
+                <div class="col-6">
+                    Создана: {{ task.timestamp_create|date:'Y-m-d' }}
+                    {% if task.timestamp_done %}
+                        Завершена: {{ task.timestamp_done|date:'Y-m-d' }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if task.project or task.sprint %}
+            <div class="card-footer">
+
+                <div class="row justify-content-between">
+                    <div class="col-6">
+                        {% if task.project %}
+                        Проект: <b><a href="{% url 'project' task.project.id %}" class="link-primary">{{ task.project.name }}</a></b>
+                        {% endif %}
+                    </div>
+                    <div class="col-6">
+                        {% if task.sprint %}
+                        Спринт: <b>{{ task.sprint.name }}</b>
+                        До: <b>{{ task.sprint.date_end }}</b>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div  class="card-footer">
+            <div class="row justify-content-between">
+                <div class="col-4">
+                    <form action="{% url "taskedit" task.id %}">
+                        <input type="submit"  class="btn btn-secondary" value="Изменить" /> </form> 
+                </div>
+                <div class="col-4">
+                    <input type="button" class = "btn btn-info" onclick="history.back();" value="Назад"/> 
+                </div>
+            </div>
+        </div>     
+
+    </div>
+
+    {% if tasks_history %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Дата и время</th>
+                    <th>Тип изменения</th>
+                    <th>Что изменилось</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for task_history_rec in tasks_history %}
+                <tr>
+                    <td>{{ task_history_rec.history_date }}</td>
+                    <td>{{ task_history_rec.type }}</td>
+                    <td>{{ task_history_rec.change_list }}</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    {% endif %}
+    
+</div>
+
+{% endblock content %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Изменение статуса {{id}}{% endblock %}
+
+{% block content %}
+
+<div class="container ">
+    <div style="width: 30rem;">
+
+        <br>
+        <h5 class="title">Изменение статуса</h5>
+        <br>
+
+        <form method="post" action="{% url 'statusedit' id %}">
+
+            <div class="mb-3">
+                <label class="form-label">Название</label>
+                {{ form.name }}
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label">Предыдущий статус</label>
+                <div class="col-sm-8">
+                    {{ form.parent_status }}
+                </div>
+            </div>
+
+            {% csrf_token %}
+
+
+            {% if form.errors or form.non_field_errors %}
+            <div class="list-group text-warning">
+                {% for field in form %}
+                    {{ field.help_text }}  {{ field.errors }}
+                {% endfor %}
+
+                {{ form.non_field_errors }}
+            </div>            
+            {% endif %}
+
+            <div class="d-flex justify-content-between flex-wrap">
+                <div class = "col-sm-8">
+                    <button type="submit" class="btn btn-primary btn-block">Внести изменения</button>
+                </div>
+                <div class="col-sm-2 ">
+                    <input type="button" class = "btn btn-danger btn-block" onclick="window.location.href='{% url 'statusdelete' id %}';" value="Удалить" />
+                </div>
+            </div>
+        </form>
+        <br>
+        <div class="col-sm-2 ">
+            <input type="button" class = "btn btn-info" onclick="history.back();" value="Назад"/>       
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

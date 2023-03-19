@@ -1,0 +1,47 @@
+{% extends 'base_wo_login.html' %}
+
+{% block base %}
+
+  <header class="p-3 text-bg-dark">
+
+    <div class="container">
+      
+        <div class="d-flex align-items-center justify-content-center">
+    
+          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="{% url 'tasklist' %}" class="nav-link text-light px-2 text-secondary">Задачи</a></li>
+            <li><a href="{% url 'projectlist' %}" class="nav-link text-light px-2 text-secondary">Проекты</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Создать
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'tasknew' %}">Задачу</a>
+                <a class="dropdown-item" href="{% url 'projectnew' %}">Проект</a>
+                <a class="dropdown-item" href="{% url 'sprintnew' %}">Спринт</a>
+              </div>
+            </li>
+          </ul>
+    
+          <ul class="text-end nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><div class="nav-link px-2 text-secondary">{{ user }}</div></li>
+              <li>
+              <form action="{% url "logout"%}">
+                <input type="submit"  class="btn btn-warning" value="Выйти" />
+              </form>
+              </li>
+          </ul>
+                
+        </div>
+      </div>
+  </header>
+    
+  <div class="container">
+
+    {% block content %}
+
+    {% endblock content %}
+
+  </div>
+
+{% endblock base %}    

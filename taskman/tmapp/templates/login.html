@@ -1,0 +1,47 @@
+{% extends 'base_wo_login.html' %}
+
+{% block title %}Вход{{ task.id }}{% endblock %}
+
+{% block base %}
+
+<div class="vh-100 d-flex justify-content-center align-items-center">
+    <div style="width: 20rem;">
+
+    <h5 class="title">Вход</h5>
+    <br>
+    <br>
+
+    <form action="{% url 'login' %}" method="post">
+
+        {% csrf_token %}
+
+        {% if form.errors or form.non_field_errors %}
+        <div class="list-group text-warning">
+            {% for field in form %}
+                {{ field.errors }}
+            {% endfor %}
+
+            {{ form.non_field_errors }}
+        </div>            
+        {% endif %}
+
+
+        <div class="form-outline mb-4">
+            {{ form.username }}
+        </div>
+    
+        <div class="form-outline mb-4">
+            {{ form.password }}
+        </div>
+
+
+        <button type="submit" class="btn btn-primary btn-block mb-4">Войти</button>
+    
+        <div class="form-outline mb-4">
+        <p><a href="{% url 'signup' %}">Зарегистрироваться</a></p>
+        </div>
+    </form>
+
+</div>            
+
+{% endblock base %}    

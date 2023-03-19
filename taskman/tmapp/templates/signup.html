@@ -1,0 +1,57 @@
+{% extends 'base_wo_login.html' %}
+
+{% block title %}Регистрация {{ task.id }}{% endblock %}
+
+{% block base %}
+
+<div class="vh-100 d-flex justify-content-center align-items-center">
+    <div style="width: 20rem;">
+
+    <h5 class="title">Регистрация</h5>
+    <br>
+    <br>
+    
+    <form action="{% url 'signup' %}" method="post">
+
+        {% csrf_token %}
+
+        {% if form.errors or form.non_field_errors %}
+        <div class="list-group text-warning">
+            {% for field in form %}
+                {{ field.errors }}
+            {% endfor %}
+
+            {{ form.non_field_errors }}
+        </div>            
+        {% endif %}
+
+        <div class="form-outline mb-4">
+            {{ form.username }}
+        </div>
+
+        <div class="form-outline mb-4">
+            {{ form.email }}
+        </div>
+
+        <div class="form-outline mb-4">
+            {{ form.password1 }}
+        </div>
+
+        <div class="form-outline mb-4">
+            {{ form.password2 }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block mb-4">Регистрация</button>
+
+        <div class="form-outline mb-4">
+            <p><a href="{% url 'login' %}">Войти</a></p>
+        </div>
+
+    </form>
+
+</div>
+
+</div>                       
+
+
+  {% endblock base %}    

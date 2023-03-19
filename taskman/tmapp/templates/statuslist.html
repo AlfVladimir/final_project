@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Справочник статусов{% endblock title %}
+
+{% block content %}
+
+<div class = "container " style="width: 30rem;">
+   <div>
+
+    <table class="table">
+      <thead>
+          <tr>
+              <th>#</th>
+              <th>Предыдущий статус</th>
+              <th>Cтатус</th>
+          </tr>
+      </thead>
+      <tbody>
+    
+        {% for status in statuses %}
+          <tr>
+              <td>{{ status.id}}</td>
+              <td>{{ status.parent_status }}</td>
+              <td>
+                <a href="{% url 'statusedit' status.id %}">
+                  {{ status.get_relative_name }}
+                </a>
+              </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+  <div class="row justify-content-between">
+  <div class="col-4">
+    <a href="{% url 'statusnew' %}" class="btn btn-primary">Новый статус</a>
+  </div>
+
+  <div class="col-4">
+    <input type="button" class = "btn btn-info" onclick="history.back();" value="Назад"/>        </form>
+  </div>
+</div>  
+</div>
+
+
+
+{% endblock content %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Проект {{ project.id }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Проект № {{ project.id }} {{ project.name }}
+            </h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">{{ project.content | linebreaks }}</p>
+        </div>
+
+        
+
+        <div  class="card-footer">
+            <div class="row justify-content-between">
+                <div class="col-4">
+                    <a href="{% url 'projectedit' project.id %}" class="btn btn-primary">Изменить проект</a>
+                </div>
+                <div class="col-4">
+                    <input type="button" class = "btn btn-info col-4" onclick="history.back();" value="Назад"/> 
+                </div>
+            </div>
+        </div>
+
+        <div  class="card-footer">
+            <div class="row justify-content-between">
+                <div class="col-4">
+                    <a href="{% url 'tasknew'%}?project_id={{ project.id }}" class="btn btn-primary">Новая задача</a>
+                </div>
+                <div class="col-4">
+                    <a href="{% url 'sprintnew'%}?project_id={{ project.id }}" class="btn btn-primary">Новый спринт</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for sprint in sprints %}
+        {% if sprint.is_active %}
+            <div class="alert alert-primary" role="alert">
+        {% else %}
+            <div class="alert alert-dark" role="alert">
+        {% endif %}
+        <a href="{% url 'sprintedit' sprint.id %}" class="stretched-link">
+                Спринт: {{ sprint.name | truncatechars_html:50 }}
+                с {{ sprint.date_start | date:'Y-m-d' }} по {{ sprint.date_end | date:'Y-m-d' }}
+                в спринте - {{ sprint.tasks.count }} задач
+        </a>
+    </div>
+    {% endfor %}
+
+    {% if tasks %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Задача</th>
+                    <th>Исполнитель</th>
+                    <th>Дата создания</th>
+                    <th>Дата исполнения</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for task in tasks %}
+                <tr>
+                    <td>
+                        {% if task.is_complete %}
+                            <del><a href="{% url 'task' task.id %}" class="link-primary">{{ task.name }}</a></del>
+                        {% else %}
+                            <a href="{% url 'task' task.id %}" class="link-primary">{{ task.name }}</a>
+                        {% endif %}                     
+                    </td>
+                    <td>{{ task.executor }}</td>
+                    <td>{{ task.timestamp_create|date:'Y-m-d' }}</td>
+                    <td>{{ task.timestamp_done|date:'Y-m-d' }}</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    {% endif %}
+    
+</div>
+
+{% endblock content %}

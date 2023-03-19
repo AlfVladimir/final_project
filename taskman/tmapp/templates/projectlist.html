@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Проекты{% endblock title %}
+
+{% block content %}
+
+
+{% comment %} Тут спринты {% endcomment %}
+{% for sprint in sprints %}
+  <div class="alert alert-primary" role="alert">
+    Аткивный спринт: {{ sprint.name | truncatechars_html:50 }}
+    с {{ sprint.date_start | date:'Y-m-d' }} по {{ sprint.date_end | date:'Y-m-d' }}
+  </div>
+{% endfor %}
+
+
+{% comment %} Тут проекты {% endcomment %}
+<div class="d-flex p-2 m-2 flex-wrap" style="gap: 0.5vw">
+  {% for project in projects %}
+
+    <div class="card" style="width: 35rem;">
+      <div class="card-header">
+        Проект: <b>{{ project.name | truncatechars_html:50 }}</b>
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{ project.content | truncatechars_html:100}}</p>
+        <p class="card-text">Создан: {{ project.timestamp_create|date:'Y-m-d' }}</p>
+        {% if project.timestamp_done %}
+        <p class="card-text">Завершен: {{ project.timestamp_done|date:'Y-m-d' }}</p>
+        {% endif %}
+        <a href="{% url 'project' project.id %}" project  class="btn btn-secondary">Побробно</a>
+      </div>
+      <div class="card-footer">
+
+          <div class="row justify-content-between">
+            <div class="col-sm-5 ">
+              Задач в проекте: {{ project.tasks.count }}
+            </div>
+            <div class="col-sm-5 ">
+              Спринтов в проекте: {{ project.sprints.count }}     
+            </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock content %}
